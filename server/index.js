@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors'
 import morgan from 'morgan';
 import userRouter from './routes/userRoute.js'
+import blogRouter from './routes/blogRouter.js'
 
 
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({limit: "30mb", extended: true}));
 app.use(cors())
 
 app.use("/users", userRouter)
+app.use("/blogs", blogRouter )
 
 const MONGODB_URL = 'mongodb+srv://tayyab:Viteace123@cluster0.k4rq6n1.mongodb.net/socialApp?retryWrites=true&w=majority'
 
