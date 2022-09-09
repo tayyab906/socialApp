@@ -2,21 +2,30 @@ import mongoose from 'mongoose';
 
 
 const blogSchema = mongoose.Schema({
-    title: String,
-    description: String,
-    name: String,
+    title: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    name: {
+        String
+    },
     creator: String,
     tags: [String],
     imageFile: String,
     createdAt: {
-        type : Date,
-        default: new Date(),
+      type: Date,
+      default: new Date(),
     },
-    likeCount: {
-        type: Number,
-        default: 0,
+    likes: {
+      type: [String],
+      default: [],
     },
-});
 
-const BlogModel = mongoose.model("Blog", blogSchema);
-export default BlogModel;
+  });
+
+
+  export default mongoose.model('Blog', blogSchema)

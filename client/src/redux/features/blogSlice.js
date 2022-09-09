@@ -58,6 +58,35 @@ export const getBlogsByuser = createAsyncThunk("blog/getBlogsByuser", async(user
 });
 
 
+export const deleteBlog = createAsyncThunk("blog/deleteBlog", async({id, toast}, {rejectWithValue}) => {
+    try {
+        const response = await api.deleteBlog(id);
+        toast.success("Blog Deleted Successfullly")
+        return response.data;
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error.response.data)
+        
+    }
+    
+});
+
+
+export const updatedBlog = createAsyncThunk("blog/updateBlog", async({id,updatedBlog, toast, navigate}, {rejectWithValue}) => {
+    try {
+        const response = await api.updateBlog(updatedBlog,id);
+        toast.success("Blog Updated Successfullly")
+        navigate("/");
+        return response.data;
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error.response.data)
+        
+    }
+    
+});
+
+
 
 
 
@@ -109,9 +138,41 @@ const blogSlice = createSlice({
         },
         [getBlogsByuser.fulfilled]: (state, action) => {
             state.loading = false;
-            state.getBlogsByuser = action.payload;
+            state.userBlogs = action.payload;
         },    
         [getBlogsByuser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload.message;
+        },
+        [deleteBlog.pending]: (state, action) => {
+            state.loading = true
+        },
+        [deleteBlog.fulfilled]: (state, action) => {
+            state.loading = false;
+            console.log("action", action)
+            const {arg: {id} } = action.meta
+            if(id){
+                state.userBlogs = state.userBlogs.filter((item) => item._id !== id);
+                state.blogs = state.blogs.filter((item) => item._id !== id);
+            }
+        },    
+        [deleteBlog.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload.message;
+        },
+        [updatedBlog.pending]: (state, action) => {
+            state.loading = true
+        },
+        [updatedBlog.fulfilled]: (state, action) => {
+            state.loading = false;
+            console.log("action", action)
+            const {arg: {id} } = action.meta
+            if(id){
+                state.userBlogs = state.userBlogs.map((item) => item._id === id ? action.payload : item);
+                state.blogs = state.blogs.map((item) => item._id === id ? action.payload : item)
+            }
+        },    
+        [updatedBlog.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload.message;
         },

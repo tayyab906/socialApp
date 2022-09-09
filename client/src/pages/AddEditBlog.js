@@ -10,9 +10,9 @@ import{
 import ChipInput from "material-ui-chip-input";
 import FileBase from "react-filebase64";
 import { toast } from 'react-toastify';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createBlog } from '../redux/features/blogSlice';
+import { createBlog, updatedBlog } from '../redux/features/blogSlice';
 
 
 const initalState = {
@@ -26,13 +26,25 @@ const initalState = {
 
 const AddEditBlog = () => {
     const [blogData, setBlogData] = useState(initalState);
-    const { error, loading} = useSelector((state) => ({ ...state.blog}))
+    const { error, loading, userBlogs} = useSelector((state) => ({ ...state.blog}))
     const { user} = useSelector((state) => ({ ...state.auth}))
     const dispatch = useDispatch()
     const navigate = useNavigate();
+    console.log(blogData)
 
 
     const{title, description, tags} = blogData;
+    const {id} = useParams();
+
+
+    useEffect(() => {
+        if(id){
+            const singleBlog = userBlogs.find((blog) => blog._id === id);
+            setBlogData({ ...singleBlog});
+        }
+    }, [id]);
+
+   
 
     useEffect(() => {
         error && toast.error(error);
@@ -42,13 +54,21 @@ const AddEditBlog = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(title && description && tags){
-            const updatedBlogData = {...blogData, name: user?.result?.name}
-            dispatch(createBlog({updatedBlogData, navigate, toast}))
+            const updatedBlogData = { ...blogData, name: user?.result?.name };
+
+            if(!id){
+                dispatch(createBlog({ updatedBlogData, navigate, toast}))
+
+            }else{
+                dispatch(updatedBlog({ id, updatedBlogData, toast, navigate }))
+            }
             handleClear();
+
         }
 
 
-    }
+    };
+
     const onInputChange = (e) => {
         const {name, value} = e.target;
         setBlogData({ ...blogData, [name]: value});
@@ -78,7 +98,11 @@ const AddEditBlog = () => {
         marginTop: "120px"
     }} className="container">
         <MDBCard alignment='center'>
-            <h5>Add Blog</h5>
+            <h5>
+                {
+                    id ? "Update Blog" : "Add Blog"
+                }
+                </h5>
             <MDBCardBody>
             <MDBValidation onSubmit={handleSubmit} className="row g-3" noValidate>
                 <div className='col-md-12'>
@@ -133,7 +157,7 @@ const AddEditBlog = () => {
                 </div>
 
                 <div className='col-12'>
-                    <MDBBtn style={{width: "100%"}}>Submit</MDBBtn>
+                    <MDBBtn style={{width: "100%"}}>{ id ? "Update" : "Submit"}</MDBBtn>
                     <MDBBtn 
                     style={{width: "100%"}}
                     className="mt-2"

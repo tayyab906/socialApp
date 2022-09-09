@@ -9,6 +9,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getBlogs } from '../redux/features/blogSlice.js';
 import CardBlog from '../componenets/CardBlog.js';
+import Spinner from '../componenets/Spinner.js';
 
 
 const Home = () => {
@@ -22,7 +23,7 @@ const Home = () => {
   }, [])
 
   if(loading){
-    return <h2>loading...</h2>
+    return <Spinner />
   }
 
 

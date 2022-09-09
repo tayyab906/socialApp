@@ -71,7 +71,7 @@ const Header = () => {
                                         </MDBNavbarLink>
                                     </MDBNavbarItem>
                                     <MDBNavbarItem>
-                                        <MDBNavbarLink href='/dashBoard'>
+                                        <MDBNavbarLink href='/dashboard'>
                                             <p className='header-text'>Dashboard</p>
                                         </MDBNavbarLink>
                                     </MDBNavbarItem>
