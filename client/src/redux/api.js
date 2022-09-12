@@ -20,5 +20,5 @@ export const createBlog = (blogData) => API.post("/blogs", blogData);
 export const getBlogs = () => API.get("/blogs");
 export const getBlog = (id) => API.get(`/blogs/${id}`);
 export const deleteBlog = (id) => API.delete(`/blogs/${id}`);
-export const updateBlog = (updatedBlog,id) => API.patch(`/blogs/${id}`, updatedBlog);
+export const updatedBlog = (updatedBlogData, id) => API.patch(`/blogs/${id}`, updatedBlogData);
 export const getBlogsByuser = (userId) => API.get(`/blogs/userBlogs/${userId}`);

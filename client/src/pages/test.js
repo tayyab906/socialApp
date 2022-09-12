@@ -12,7 +12,7 @@ import FileBase from "react-filebase64";
 import { toast } from 'react-toastify';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createBlog, updateBlog } from '../redux/features/blogSlice';
+import { createBlog, updatedBlog } from '../redux/features/blogSlice';
 
 
 const initalState = {
@@ -60,7 +60,7 @@ const AddEditBlog = () => {
                 dispatch(createBlog({ updatedBlogData, navigate, toast}))
 
             }else{
-                dispatch(updateBlog({id, updatedBlogData, toast, navigate }))
+                dispatch(updatedBlog({ id, updatedBlogData, toast, navigate }))
             }
             handleClear();
 
